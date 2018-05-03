@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">MeetRoom</string>
     <string name="personal_info">个人信息</string>
+    <string name="password">密码</string>
+    <string name="forgot_pwd">忘记密码</string>
+    <string name="new_user_register">新用户注册</string>
+    <string name="login">登录</string>
+    <string name="phone_number">手机号</string>
 </resources>
