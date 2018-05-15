@@ -78,6 +78,7 @@ public class HttpUtil {
                     String result = response.body().string();
                     if (result != null && listener != null) {
                         //当response的code大于200，小于300时，视作请求成功
+                        Log.i("", "run: "+result);
                         if (response.isSuccessful()) {
                             listener.onFinish(result);
                         } else {

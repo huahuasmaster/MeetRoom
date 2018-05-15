@@ -3,6 +3,7 @@ package zyz.com.meetroom.http;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.lang.annotation.Retention;
 import java.util.Date;
 
 import zyz.com.meetroom.application.ContextApplication;
@@ -30,20 +31,13 @@ public class UrlHandler {
         return "http://"+getIp()+":"+port+"/login";
     }
 
-    //注销url
-    public static String getLogoutUrl() {
-        return "http://"+getIp()+":"+port+"/smart-sso-server/app/logout";
-    }
+    //假登录URL
+    public static String getFakeLoginUrl(){return  getHead()+"/meeting-room/login";}
 
-    //设备列表
-    public static String getDeviceList() {
-        return getHead()+"/device";
-    }
-
-    //请求设备上线
-    public static String getDeviceOnline() {
-        return getHead()+"/device";
-    }
+    //待进行会议列表
+    public static String getMeetingList() {return getHead()+"/meeting-room/appointment/"
+            +getUserId()+"/list";
+            }
 
 
     /**
@@ -57,7 +51,7 @@ public class UrlHandler {
 
     //获取服务器ip
     public static String getIp() {
-        return loginSp.getString("ip", "192.168.1.102");
+        return loginSp.getString("ip", "192.168.1.196");
     }
 
     //设置服务器ip
@@ -75,12 +69,12 @@ public class UrlHandler {
     }
 
 
-    public static long getUserId() {
-        return loginSp.getLong("user_id", -1L);
+    public static String getUserId() {
+        return loginSp.getString("id", "-1");
     }
 
-    public static void setUserId(long userId) {
-        loginSp.edit().putLong("user_id", userId).apply();
+    public static void setUserId(String userId) {
+        loginSp.edit().putString("id", userId).apply();
     }
 
 }

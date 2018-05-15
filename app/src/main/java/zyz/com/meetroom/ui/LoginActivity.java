@@ -39,6 +39,7 @@ import okhttp3.RequestBody;
 import zyz.com.meetroom.R;
 import zyz.com.meetroom.http.HttpCallbackListener;
 import zyz.com.meetroom.http.HttpUtil;
+import zyz.com.meetroom.http.RequestJsonBodyBuilder;
 import zyz.com.meetroom.http.UrlHandler;
 
 public class LoginActivity extends AppCompatActivity {
@@ -61,12 +62,17 @@ public class LoginActivity extends AppCompatActivity {
         final String password = pwdEdit.getText().toString().trim();
         waitDialog.show();
 
-        final MediaType type = MediaType.parse("application/json;charset=utf-8");
-        JsonObject o = new JsonObject();
-        o.addProperty("phone",phone);
-        o.addProperty("password",password);
-        Log.i(TAG, "login: json:"+o.toString());
-        RequestBody body = RequestBody.create(type,o.toString());
+//        final MediaType type = MediaType.parse("application/json;charset=utf-8");
+//
+//        JsonObject o = new JsonObject();
+//        o.addProperty("phone",phone);
+//        o.addProperty("password",password);
+//        Log.i(TAG, "login: json:"+o.toString());
+        RequestBody body;
+//        body = RequestBody.create(type,o.toString());
+        body = new RequestJsonBodyBuilder().addParam("phone",phone)
+                .addParam("password",password)
+                .build();
         String url = UrlHandler.getLoginUrl();
         HttpUtil.getInstance().post(url, body, new HttpCallbackListener() {
             @Override
