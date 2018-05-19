@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import okhttp3.MediaType;
 import zyz.com.meetroom.R;
 
@@ -107,7 +108,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
+    @OnLongClick(R.id.register_btn) boolean jump() {
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        return true;
+    }
     private SharedPreferences loginSp;
     private MaterialDialog waitDialog;
 

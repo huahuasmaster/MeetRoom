@@ -1,5 +1,6 @@
 package zyz.com.meetroom.ui;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -54,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.rv_main)
     RecyclerView recyclerView;
+
+    @OnClick(R.id.fab_main) void gotoApply() {
+        startActivity(new Intent(this,ApplyMeetingRoomActivity.class));
+    }
 
     private boolean rvInit = false;
     @Override

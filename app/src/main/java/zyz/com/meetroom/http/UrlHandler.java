@@ -18,7 +18,6 @@ import zyz.com.meetroom.application.ContextApplication;
 public class UrlHandler {
 
 
-
     private static String port = "8088";
 
 
@@ -28,17 +27,27 @@ public class UrlHandler {
 
     //获取登录url
     public static String getLoginUrl() {
-        return "http://"+getIp()+":"+port+"/login";
+        return "http://" + getIp() + ":" + port + "/login";
     }
 
     //假登录URL
-    public static String getFakeLoginUrl(){return  getHead()+"/meeting-room/login";}
+    public static String getFakeLoginUrl() {
+        return getHead() + "/meeting-room/login";
+    }
 
     //待进行会议列表
-    public static String getMeetingList() {return getHead()+"/meeting-room/appointment/"
-            +getUserId()+"/list";
-            }
+    public static String getMeetingList() {
+        return getHead() + "/meeting-room/appointment/"
+                + getUserId() + "/list";
+    }
 
+    public static String getApplyUrl() {
+        return getHead() + "/meeting-room/appointment";
+    }
+
+    public static String getStaffList(long departmentId) {
+        return getHead()+"/meeting-room/staff/list?departmentId="+departmentId;
+    }
 
     /**
      * 获取(除了登录接口)请求的开头ip与端口
@@ -76,5 +85,6 @@ public class UrlHandler {
     public static void setUserId(String userId) {
         loginSp.edit().putString("id", userId).apply();
     }
+
 
 }

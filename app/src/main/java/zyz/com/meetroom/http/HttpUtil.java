@@ -1,10 +1,13 @@
 package zyz.com.meetroom.http;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -22,6 +25,7 @@ public class HttpUtil {
     private static final String IDENTITY = "user";
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
+    @SuppressLint("CommitPrefEdits")
     private HttpUtil(){
         client = new OkHttpClient();
         sp = ContextApplication.getContext()
@@ -37,14 +41,19 @@ public class HttpUtil {
         return httpUtil;
     }
 
-    public void sendRequestWithCallback(final RequestTypeEnum method, final String address, final RequestBody body, final HttpCallbackListener listener
-    ) {
+    public void sendRequestWithCallback(final RequestTypeEnum method, final String address, final RequestBody body, final HttpCallbackListener listener,
+                                        HashMap<String,String> headers) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Request.Builder builder = new Request.Builder()
                         .url(address).header("authorization",token)
                         .header("identity",IDENTITY);
+                if(headers != null) {
+                    for (Map.Entry<String, String> entry : headers.entrySet()) {
+                        builder.header(entry.getKey(), entry.getValue());
+                    }
+                }
                 Log.i("url", "使用了token进行访问："+token);
                 switch (method) {
                     case POST:
@@ -66,11 +75,12 @@ public class HttpUtil {
                     //实际进行请求的代码
                     Log.i("url",address);
                     Response response = client.newCall(request).execute();
-                    token = response.header("authorization");
+                    String temp = response.header("authorization");
                     Log.i("url", "run: 获取到的token："+token);
-                    if(token == null) {
+                    if(temp == null) {
                           Log.i("","没有token使用默认token");
                     } else {
+                        token = temp;
                         Log.i("","收到token："+token);
                     }
 
@@ -97,19 +107,23 @@ public class HttpUtil {
     }
 
     public void post(final String address, RequestBody body, final HttpCallbackListener listener) {
-        sendRequestWithCallback(RequestTypeEnum.POST,address,body,listener);
+        sendRequestWithCallback(RequestTypeEnum.POST,address,body,listener,null);
     }
 
     public void get(String address,HttpCallbackListener listener) {
-        sendRequestWithCallback(RequestTypeEnum.GET,address,null,listener);
+        sendRequestWithCallback(RequestTypeEnum.GET,address,null,listener,null);
+    }
+
+    public void get(String address,HttpCallbackListener listener,HashMap<String,String> map) {
+        sendRequestWithCallback(RequestTypeEnum.GET,address,null,listener,map);
     }
 
     public void delete(String address,RequestBody body,HttpCallbackListener listener) {
-        sendRequestWithCallback(RequestTypeEnum.DELETE,address,body,listener);
+        sendRequestWithCallback(RequestTypeEnum.DELETE,address,body,listener,null);
     }
 
     public void put(String address,RequestBody body,HttpCallbackListener listener) {
-        sendRequestWithCallback(RequestTypeEnum.PUT,address,body,listener);
+        sendRequestWithCallback(RequestTypeEnum.PUT,address,body,listener,null);
     }
 
 
