@@ -49,10 +49,18 @@ public class UrlHandler {
         return getHead()+"/meeting-room/staff/list?departmentId="+departmentId;
     }
 
+    //获取消息（邮件）列表
+    public static String getMsgList() {
+        return getHead()+"/meeting-room/staff/"+getUserId()+"/message/list";
+    }
+
+    //获取某个消息的详情
+    public static String getMsgDetail(long msgId) {
+        return getHead()+"/meeting-room/staff/"+getUserId()+"/message/"+msgId;
+    }
+
     /**
      * 获取(除了登录接口)请求的开头ip与端口
-     *
-     * @return
      */
     public static String getHead() {
         return "http://" + getIp() + ":" + port;
@@ -60,7 +68,7 @@ public class UrlHandler {
 
     //获取服务器ip
     public static String getIp() {
-        return loginSp.getString("ip", "192.168.1.196");
+        return loginSp.getString("ip", "192.168.1.102");
     }
 
     //设置服务器ip

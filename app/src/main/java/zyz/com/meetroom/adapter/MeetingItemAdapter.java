@@ -34,7 +34,7 @@ public class MeetingItemAdapter extends RecyclerView.Adapter{
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.meeting_item_main,parent);
+                .inflate(R.layout.meeting_item_main,parent,false);
         return new MyViewHolder(v);
     }
 
@@ -65,7 +65,9 @@ public class MeetingItemAdapter extends RecyclerView.Adapter{
         TextView time;
         public MyViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(itemView);
+            location = itemView.findViewById(R.id.meet_location);
+            meetName = itemView.findViewById(R.id.meeting_name);
+            time = itemView.findViewById(R.id.start_time);
         }
     }
 }

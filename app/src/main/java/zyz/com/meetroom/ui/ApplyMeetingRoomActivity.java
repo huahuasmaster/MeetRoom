@@ -1,6 +1,7 @@
 package zyz.com.meetroom.ui;
 
 import android.annotation.SuppressLint;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -77,7 +79,6 @@ public class ApplyMeetingRoomActivity extends AppCompatActivity
     TimePickerDialog endTimeDialog;
     MaterialDialog chooseStaffDialog;
 
-    private List<Long> memberIds = new ArrayList<>();
     private Calendar startDateTime = Calendar.getInstance();
     private List<StaffBriefModel> staffs = new ArrayList<>();
     String[] staffNames;
@@ -213,7 +214,7 @@ public class ApplyMeetingRoomActivity extends AppCompatActivity
                 endDateTime.getTime(),
                 -1L,
                 null,
-                toArray(memberIds),
+                toArray(choosedStaffIndex,staffs),
                 remark, false);
 
         RequestBody body = new RequestJsonBodyBuilder<AppointmentInsertModel>()
@@ -224,13 +225,18 @@ public class ApplyMeetingRoomActivity extends AppCompatActivity
         HttpUtil.getInstance().post(url, body, new HttpCallbackListener() {
             @Override
             public void onFinish(String response) {
-                runOnUiThread(() -> Snackbar.make(chooseMemberBtn, "提交成功", Snackbar.LENGTH_SHORT).show());
+                runOnUiThread(() -> Toast.makeText(ApplyMeetingRoomActivity.this,
+                        "提交成功", Toast.LENGTH_SHORT).show());
                 finish();
             }
 
             @Override
             public void onError(Exception e) {
                 Log.e(TAG, "onError: ", e);
+                runOnUiThread(()->Toast.makeText(ApplyMeetingRoomActivity.this,
+                        e.getMessage(), Toast.LENGTH_SHORT).show());
+
+
             }
         });
 
@@ -275,11 +281,15 @@ public class ApplyMeetingRoomActivity extends AppCompatActivity
         }
     }
 
-    private Long[] toArray(List<Long> source) {
-        Long[] result = new Long[source.size()];
-        for (int i = 0; i < source.size(); i++) {
-            result[i] = source.get(i);
+    private Long[] toArray(Integer[] index,List<StaffBriefModel> staffBriefModels) {
+        if(index == null) {
+            return null;
+        }
+        Long[] result = new Long[index.length];
+        for(int i = 0; i < index.length; i++) {
+            result[i] = staffBriefModels.get(i).getId();
         }
         return result;
     }
+
 }
